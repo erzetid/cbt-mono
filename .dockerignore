@@ -1,0 +1,28 @@
+# Copyright (c) 2022 StasiunFile Inc
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+repl.ts
+notes
+rest
+*.heapsnapshot
+*.cpuprofile
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# FE
+admin
+siswa

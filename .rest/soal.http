@@ -1,0 +1,26 @@
+###GET
+
+GET http://localhost:3660/soal
+
+###GET by id
+
+GET http://localhost:3660/soal/62054fced9d1b9d18bed6394
+
+###GET perSoal
+
+GET http://localhost:3660/soal/per_soal/62054fced9d1b9d18bed6395
+
+### Post
+
+POST http://localhost:3660/soal
+Content-Type: application/json
+
+{
+    "nama": "Soal Matematika",
+    "jumlah": 20,
+    "jumlahOpsi": 5
+}
+
+### DELETE
+
+DELETE http://localhost:3660/soal/61fbc959238ac624ac601621

@@ -1,0 +1,19 @@
+### Get sekolah
+
+GET http://localhost:3660/sekolah
+
+###
+PUT http://localhost:3660/sekolah
+Content-Type: application/json
+
+{
+    "_id": "61fbc3785090ea95b95f90c6",
+    "data": {
+        "namaSekolah": "SMK Maarif NU 01 Wanasari",
+        "email": "smk@gmail.com",
+        "telepon": "08123456789",
+        "alamatSekolah": "Pesantunan, wanasari, brebes",
+        "logo": "logo",
+        "tahunPelajaranSekarang": "2021/2022"
+    }
+}

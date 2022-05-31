@@ -1,0 +1,34 @@
+### Get all
+
+GET http://localhost:3660/siswa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIwMDdjOTBlZGQxZDMyM2I0MDk2YjQ1Iiwicm9sZSI6InNpc3dhIiwiaWF0IjoxNjQ0Mzg0MjM4fQ.MyhV8yfkOCrq8eg9x5-I7BprMbJG73CPewhoFsmMAtw
+
+### Get byId
+
+GET http://localhost:3660/siswa/61fb9af519a76f2189d3e6dd
+
+### Post
+
+POST http://localhost:3660/siswa
+Content-Type: application/json
+
+{
+    "username": "user2022",
+    "password": "pass2022",
+    "nisn": "nisn2021",
+    "nama": "contoh nama",
+    "kelas": "kelas2021"
+}
+
+#### Edit siswa
+PUT http://localhost:3660/siswa
+Content-Type: application/json
+
+{
+    "_id": "62007c90edd1d323b4096b45",
+    "nama": "Editnama",
+    "kelas": "kelas2021"
+}
+
+### hapus
+DELETE http://localhost:3660/siswa/61ffb14933cf8bb65da841df

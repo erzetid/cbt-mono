@@ -1,0 +1,14 @@
+### Login
+POST http://localhost:3660/auth
+Content-Type: application/json
+
+{
+    "username": "user2022",
+    "password": "pass2022"
+}
+
+### refresh login
+GET http://localhost:3660/auth/token
+
+### Reset login
+DELETE http://localhost:3660/auth/

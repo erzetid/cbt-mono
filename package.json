@@ -1,0 +1,44 @@
+{
+  "name": "server-cbt",
+  "version": "1.0.0",
+  "description": "Boilerplate Express Mongo",
+  "type": "module",
+  "private": true,
+  "main": "app.js",
+  "author": "Nailul Rifki",
+  "license": "MIT",
+  "scripts": {
+    "start": "NODE_ENV=production node dist/main.cjs",
+    "admin": "npm start --prefix admin",
+    "siswa": "npm start --prefix siswa",
+    "server": "nodemon app.js",
+    "test": "concurrently \"jest --watch --verbose\" \"npm run test --prefix admin\" \"npm run test --prefix siswa\"",
+    "dev": "export NODE_ENV=development && concurrently \"nodemon\" \"npm run admin\"",
+    "build:server": "webpack --mode production",
+    "build:all": "rm -rf dist/ && concurrently \"webpack --mode production\" \"npm run build --prefix admin\" \"npm run build --prefix siswa\"",
+    "password": "node password.js"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.8",
+    "bcrypt": "^5.0.1",
+    "concurrently": "^7.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^15.0.0",
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.12",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.4",
+    "eslint": "^7.32.0",
+    "javascript-obfuscator": "^3.1.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-obfuscator": "^3.5.0"
+  }
+}

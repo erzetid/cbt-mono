@@ -1,0 +1,21 @@
+### Get
+
+GET http://localhost:3660/pengumuman
+
+### Get by kelas
+GET http://localhost:3660/pengumuman/kelas
+
+### post
+
+POST http://localhost:3660/pengumuman
+Content-Type: application/json
+
+{
+    "judul": "judul pengumuman4",
+    "isi": "isi pengumuman",
+    "kelas": "kelas2"
+}
+
+### Hapus
+
+DELETE http://localhost:3660/pengumuman/61fbc35e5090ea95b95f90be
