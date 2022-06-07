@@ -13,42 +13,34 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo } from "react";
-
-// react-router components
-import { Routes, Route, Navigate, useLocation, Router } from "react-router-dom";
-
-// @mui material components
-import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
-import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
-
-// Material Dashboard 2 React themes
-import theme from "assets/theme";
-
-// Material Dashboard 2 React Dark Mode themes
-import themeDark from "assets/theme-dark";
-
-// Material Dashboard 2 React routes
-import routes from "routes";
-
-// Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
-import SignIn from "layouts/authentication/sign-in";
+// @mui material components
+import { ThemeProvider } from "@mui/material/styles";
+import brandDark from "assets/images/logo-ct-dark.png";
 // Images
 import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
-import store from "./store";
-import { Provider } from "react-redux";
+// Material Dashboard 2 React themes
+import theme from "assets/theme";
+// Material Dashboard 2 React Dark Mode themes
+import themeDark from "assets/theme-dark";
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+// Material Dashboard 2 React contexts
+import { setMiniSidenav, setOpenConfigurator, useMaterialUIController } from "context";
+import Configurator from "examples/Configurator";
+// Material Dashboard 2 React example components
+import Sidenav from "examples/Sidenav";
+import SignIn from "layouts/authentication/sign-in";
 import ManageSoal from "layouts/manageSoal";
+import { useEffect, useMemo, useState } from "react";
+import { Provider } from "react-redux";
+// react-router components
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+// Material Dashboard 2 React routes
+import routes from "routes";
+import store from "./store";
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -94,6 +86,8 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  const menus = useMemo(() => routes, []);
+
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -101,7 +95,13 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            path={route.route}
+            element={useMemo(() => route.element, [menus])}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -135,6 +135,14 @@ export default function App() {
     <Provider store={store}>
       <ThemeProvider theme={darkMode ? themeDark : theme}>
         <CssBaseline />
+        <>
+          <Routes>
+            <Route path="/login" exact element={<SignIn />} />
+            <Route path="/manage_soal" element={<ManageSoal />} />
+            {getRoutes(menus)}
+            <Route path="/" element={<Navigate to="/login" />} />
+          </Routes>
+        </>
         {layout === "dashboard" && (
           <>
             <Sidenav
@@ -150,12 +158,6 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
-        <Routes>
-          <Route path="/login" exact element={<SignIn />} />
-          <Route path="/manage_soal" exact element={<ManageSoal />} />
-          {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
       </ThemeProvider>
     </Provider>
   );

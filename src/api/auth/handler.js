@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import Users from "../../model/user.js";
-import Siswas from "../../model/siswa.js";
-import BaseHandler from "../default.js";
-import { JWT_SECRET, REFRESH_TOKEN_SECRET } from "../../config/index.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET, REFRESH_TOKEN_SECRET } from '../../config/index.js';
+import Siswas from '../../model/siswa.js';
+import Users from '../../model/user.js';
+import BaseHandler from '../default.js';
 
 const user = new Users();
 const siswa = new Siswas();
@@ -14,16 +14,16 @@ export default class AuthHandler extends BaseHandler {
       const refreshToken = req.cookies.refreshToken;
       if (!refreshToken) {
         return super.render(res, 401, {
-          status: "error",
-          message: "Access Denied / Unauthorized request",
+          status: 'error',
+          message: 'Access Denied / Unauthorized request'
         });
       }
 
       const cekRefreshToken = await user.getRefreshToken(refreshToken);
       if (!cekRefreshToken) {
         return super.render(res, 401, {
-          status: "error",
-          message: "Access Denied / Unauthorized request",
+          status: 'error',
+          message: 'Access Denied / Unauthorized request'
         });
       }
 
@@ -35,7 +35,7 @@ export default class AuthHandler extends BaseHandler {
       if (!checkUsername.idUser) {
         payload = {
           user: checkUsername._id,
-          role: checkUsername.role,
+          role: checkUsername.role
         };
       } else {
         const { kelas } = await siswa.getById(checkUsername.idUser);
@@ -44,38 +44,38 @@ export default class AuthHandler extends BaseHandler {
           user: checkUsername._id,
           kelas,
           idUser: checkUsername.idUser,
-          role: checkUsername.role,
+          role: checkUsername.role
         };
       }
 
       const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: "3600s",
+        expiresIn: '7d'
       });
 
       const refreshTokenNew = jwt.sign(
         { user: checkUsername._id },
         REFRESH_TOKEN_SECRET,
         {
-          expiresIn: "7d",
+          expiresIn: '7d'
         }
       );
       await user.setRefresToken(checkUsername._id, refreshTokenNew);
-      res.cookie("refreshToken", refreshTokenNew, {
+      res.cookie('refreshToken', refreshTokenNew, {
         proxy: true,
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
-        secure: true,
+        secure: true
       });
       return super.render(res, 200, {
-        status: "success",
-        message: "Refresh token berhasil!",
-        token,
+        status: 'success',
+        message: 'Refresh token berhasil!',
+        token
       });
     } catch (error) {
       console.log(error);
       return super.render(res, 403, {
-        status: "error",
-        message: "Access forbidden!",
+        status: 'error',
+        message: 'Access forbidden!'
       });
     }
   }
@@ -86,23 +86,23 @@ export default class AuthHandler extends BaseHandler {
       const checkUsername = await user.getUsername(username);
       if (!checkUsername) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Username tidak ditemukan!",
+          status: 'error',
+          message: 'Username tidak ditemukan!'
         });
       }
 
       const match = await bcrypt.compare(password, checkUsername.password);
       if (!match) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Passwor salah!",
+          status: 'error',
+          message: 'Passwor salah!'
         });
       }
       let payload;
       if (!checkUsername.idUser) {
         payload = {
           user: checkUsername._id,
-          role: checkUsername.role,
+          role: checkUsername.role
         };
       } else {
         const { kelas } = await siswa.getById(checkUsername.idUser);
@@ -110,38 +110,38 @@ export default class AuthHandler extends BaseHandler {
           user: checkUsername._id,
           kelas,
           idUser: checkUsername.idUser,
-          role: checkUsername.role,
+          role: checkUsername.role
         };
       }
 
       const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: "3600s",
+        expiresIn: '7d'
       });
 
       const refreshToken = jwt.sign(
         { user: checkUsername._id },
         REFRESH_TOKEN_SECRET,
         {
-          expiresIn: "7d",
+          expiresIn: '7d'
         }
       );
       await user.setRefresToken(checkUsername._id, refreshToken);
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie('refreshToken', refreshToken, {
         proxy: true,
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
-        secure: true,
+        secure: true
       });
       super.render(res, 200, {
-        status: "success",
-        message: "Login berhasil!",
-        token,
+        status: 'success',
+        message: 'Login berhasil!',
+        token
       });
     } catch (error) {
       console.log(error);
       return super.render(res, 500, {
-        status: "error",
-        message: "Mohon maaf, kesalahan server!",
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
       });
     }
   }
@@ -151,8 +151,8 @@ export default class AuthHandler extends BaseHandler {
       const refreshToken = req.cookies.refreshToken;
       if (!refreshToken) {
         return super.render(res, 401, {
-          status: "error",
-          message: "Access Denied / Unauthorized request",
+          status: 'error',
+          message: 'Access Denied / Unauthorized request'
         });
       }
 
@@ -160,23 +160,23 @@ export default class AuthHandler extends BaseHandler {
 
       if (!cekRefreshToken) {
         return super.render(res, 401, {
-          status: "error",
-          message: "Access Denied / Unauthorized request",
+          status: 'error',
+          message: 'Access Denied / Unauthorized request'
         });
       }
 
       await user.setRefresToken(cekRefreshToken._id, null);
 
-      res.clearCookie("refreshToken");
+      res.clearCookie('refreshToken');
       return super.render(res, 200, {
-        status: "success",
-        message: "User berhasil keluar!",
+        status: 'success',
+        message: 'User berhasil keluar!'
       });
     } catch (error) {
       console.log(error);
       return super.render(res, 500, {
-        status: "error",
-        message: "Mohon maaf, kesalahan server!",
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
       });
     }
   }
@@ -185,51 +185,51 @@ export default class AuthHandler extends BaseHandler {
     try {
       const { username, password: plainPassword } = req.body;
       const validateSpace = (str) => /\s/.test(str);
-      if (typeof username !== "string" || username === "") {
+      if (typeof username !== 'string' || username === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "Username tidak boleh kosong!",
+          status: 'error',
+          message: 'Username tidak boleh kosong!'
         });
       }
 
       if (
-        typeof plainPassword !== "string" ||
-        plainPassword === "" ||
+        typeof plainPassword !== 'string' ||
+        plainPassword === '' ||
         plainPassword.length < 8
       ) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Password minimal 8 karakter!",
+          status: 'error',
+          message: 'Password minimal 8 karakter!'
         });
       }
 
       if (validateSpace(plainPassword) || validateSpace(username))
         return super.render(res, 400, {
-          status: "error",
-          message: "Username dan password tidak boleh ada spasi!",
+          status: 'error',
+          message: 'Username dan password tidak boleh ada spasi!'
         });
       const salt = bcrypt.genSaltSync(10);
       const password = bcrypt.hashSync(plainPassword, salt);
       const checkUsername = await user.getUsername(username);
       if (checkUsername) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Username tidak tersedia!",
+          status: 'error',
+          message: 'Username tidak tersedia!'
         });
       }
 
       await user.simpanAdmin(username, password);
 
       super.render(res, 200, {
-        status: "success",
-        message: "Berhasil menyimpan admin baru!",
+        status: 'success',
+        message: 'Berhasil menyimpan admin baru!',
         username,
-        password,
+        password
       });
     } catch (error) {
       return super.render(res, 500, {
-        status: "error",
-        message: "Mohon maaf, kesalahan server!",
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
       });
     }
   }

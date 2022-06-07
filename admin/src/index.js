@@ -13,18 +13,20 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { HashRouter } from "react-router-dom";
 import App from "App";
-
 // Soft UI Context Provider
 import { MaterialUIControllerProvider } from "context";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { HashRouter } from "react-router-dom";
+import store from "store";
 
 ReactDOM.render(
   <HashRouter>
     <MaterialUIControllerProvider>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </MaterialUIControllerProvider>
   </HashRouter>,
   document.getElementById("root")

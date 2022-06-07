@@ -13,29 +13,25 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { getAktifitasLogs, deleteLogs } from "store/slice/logThunk";
-import { refreshToken } from "store/slice/authThunk";
-
+import Card from "@mui/material/Card";
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+// Data
+import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
-
+import Footer from "examples/Footer";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-
-// Data
-import MDButton from "components/MDButton";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { refreshToken } from "store/slice/authThunk";
+import { deleteLogs, getAktifitasLogs } from "store/slice/logThunk";
 import { jwtDeccode } from "utils/jwtDecode";
 
 const columns = [
@@ -67,6 +63,7 @@ const Aktifitas = () => {
     };
     checkLogin();
   }, [refreshTable]);
+
   const handleClickReset = async (id) => {
     await dispatch(refreshToken());
     await dispatch(deleteLogs(id));

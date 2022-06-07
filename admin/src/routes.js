@@ -32,20 +32,21 @@ Coded by www.creative-tim.com
   8. The `route` key is used to store the route location which is used for the react router.
   9. The `href` key is used to store the external links location.
   10. The `title` key is only for the item with the type of `title` and its used for the title text on the Sidenav.
-  10. The `component` key is used to store the component of its route.
+  10. The `element` key is used to store the element of its route.
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
-import Siswa from "layouts/siswa";
-
 // @mui icons
 import Icon from "@mui/material/Icon";
-import Pengaturan from "layouts/pengaturan";
-import Soal from "layouts/soal";
-import Ujian from "layouts/ujian";
-import Nilai from "layouts/nilai";
 import Aktifitas from "layouts/aktifitas";
+import Cetak from "layouts/cetak";
+import Dashboard from "layouts/dashboard";
+import Nilai from "layouts/nilai";
+import Pengaturan from "layouts/pengaturan";
+import Siswa from "layouts/siswa";
+import Soal from "layouts/soal";
+import React from "react";
+const Ujian = React.lazy(() => import("layouts/ujian"));
 
 const routes = [
   {
@@ -54,7 +55,8 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    path: "/dashboard",
+    element: <Dashboard />,
   },
   {
     type: "collapse",
@@ -62,7 +64,8 @@ const routes = [
     key: "siswa",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/siswa",
-    component: <Siswa />,
+    path: "/siswa",
+    element: <Siswa />,
   },
   {
     type: "collapse",
@@ -70,7 +73,8 @@ const routes = [
     key: "soal",
     icon: <Icon fontSize="small">article</Icon>,
     route: "/soal",
-    component: <Soal />,
+    path: "/soal",
+    element: <Soal />,
   },
   {
     type: "collapse",
@@ -78,7 +82,12 @@ const routes = [
     key: "ujian",
     icon: <Icon fontSize="small">quiz</Icon>,
     route: "/ujian",
-    component: <Ujian />,
+    path: "/ujian",
+    element: (
+      <React.Suspense fallback="loading....">
+        <Ujian />
+      </React.Suspense>
+    ),
   },
   {
     type: "collapse",
@@ -86,7 +95,8 @@ const routes = [
     key: "nilai",
     icon: <Icon fontSize="small">create</Icon>,
     route: "/nilai",
-    component: <Nilai />,
+    path: "/nilai",
+    element: <Nilai />,
   },
   {
     type: "collapse",
@@ -94,7 +104,17 @@ const routes = [
     key: "aktifitas",
     icon: <Icon fontSize="small">analytics</Icon>,
     route: "/aktifitas",
-    component: <Aktifitas />,
+    path: "/aktifitas",
+    element: <Aktifitas />,
+  },
+  {
+    type: "collapse",
+    name: "Cetak",
+    key: "cetak",
+    icon: <Icon fontSize="small">print</Icon>,
+    route: "/cetak",
+    path: "/cetak",
+    element: <Cetak />,
   },
   {
     type: "collapse",
@@ -102,7 +122,8 @@ const routes = [
     key: "pengaturan",
     icon: <Icon fontSize="small">settings</Icon>,
     route: "/pengaturan",
-    component: <Pengaturan />,
+    path: "/pengaturan",
+    element: <Pengaturan />,
   },
 ];
 

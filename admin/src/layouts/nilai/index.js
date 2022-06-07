@@ -14,41 +14,26 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import { useNavigate } from "react-router-dom";
-import Grid from "@mui/material/Grid";
+import { Icon } from "@mui/material";
 import Card from "@mui/material/Card";
-
+import Grid from "@mui/material/Grid";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
+import MDTypography from "components/MDTypography";
+import Footer from "examples/Footer";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import MDTypography from "components/MDTypography";
-
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Icon,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import { useEffect, useState } from "react";
 import DataTable from "examples/Tables/DataTable";
-import MDBadge from "components/MDBadge";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { refreshToken } from "store/slice/authThunk";
-import { jwtDeccode } from "utils/jwtDecode";
-import PointDialog from "./PointDialog";
-import { getUjian } from "store/slice/ujianThunk";
-import { filterKelas } from "utils/jwtDecode";
 import { getKelas } from "store/slice/kelasThunk";
-import { getNilaiUjian } from "store/slice/ujianThunk";
+import { getNilaiUjian, getUjian } from "store/slice/ujianThunk";
+import { filterKelas, jwtDeccode } from "utils/jwtDecode";
+import PointDialog from "./PointDialog";
+
 function Nilai() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

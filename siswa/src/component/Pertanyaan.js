@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   lihatJawaban,
   pertanyaan,
+  selesaiUjian,
   updateJawaban
 } from '../app/slice/ujianThunk';
 
@@ -61,7 +62,7 @@ export default function Pertanyaan() {
         setCountDown((countDown) => countDown - 1);
       }, 1000);
     } else {
-      clearInterval(timerId);
+      handleSelesai();
     }
 
     return () => clearInterval(timerId);
@@ -111,6 +112,10 @@ export default function Pertanyaan() {
         jawaban: value
       })
     );
+  };
+
+  const handleSelesai = async () => {
+    await dispatch(selesaiUjian(dataJawaban._id));
   };
 
   return (
@@ -173,7 +178,12 @@ export default function Pertanyaan() {
         >
           Sebelumnya
         </Button>
-        <Button variant="contained" size="large" color="warning">
+        <Button
+          onClick={handleSelesai}
+          variant="contained"
+          size="large"
+          color="warning"
+        >
           Soal
         </Button>
         <Button

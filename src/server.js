@@ -1,10 +1,10 @@
-import express from "express";
-import path from "path";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import router from "./routes/index.js";
-import Database from "./database/index.js";
-import { MONGO_URI } from "./config/index.js";
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express from 'express';
+import path from 'path';
+import { MONGO_URI } from './config/index.js';
+import Database from './database/index.js';
+import router from './routes/index.js';
 
 export default class Server {
   app = express();
@@ -13,10 +13,10 @@ export default class Server {
   constructor(port) {
     this.port = port;
     this.view = {
-      staticAdmin: path.join(path.resolve(), "dist/admin/"),
-      admin: path.join(path.resolve(), "dist/admin/index.html"),
-      staticSiswa: path.join(path.resolve(), "dist/siswa/"),
-      siswa: path.join(path.resolve(), "dist/siswa/index.html"),
+      staticAdmin: path.join(path.resolve(), 'dist/admin/'),
+      admin: path.join(path.resolve(), 'dist/admin/index.html'),
+      staticSiswa: path.join(path.resolve(), 'dist/siswa/'),
+      siswa: path.join(path.resolve(), 'dist/siswa/index.html')
     };
     this.middelwares();
     this.routes();
@@ -26,7 +26,7 @@ export default class Server {
   middelwares() {
     this.app.use(cors({ credentials: true, origin: true }));
     this.app.use(cookieParser());
-    this.app.disable("x-powered-by");
+    this.app.disable('x-powered-by');
     this.app.use(express.json());
     this.app.use((_req, _res, next) => {
       return next();
@@ -36,8 +36,8 @@ export default class Server {
     this.app.use((err, _req, res, next) => {
       if (err instanceof SyntaxError) {
         return res.status(400).json({
-          status: "error",
-          message: "Payload/data tidak valid!",
+          status: 'error',
+          message: 'Payload/data tidak valid!'
         }); // Bad request
       }
       next();
@@ -51,15 +51,15 @@ export default class Server {
   }
 
   routes() {
-    this.app.get("/", (_req, res) => {
-      res.send("404 Not Found!");
+    this.app.get('/', (_req, res) => {
+      res.send('404 Not Found!');
     });
-    this.app.get("/admin", (_req, res) => {
+    this.app.get('/admin', (_req, res) => {
       res.sendFile(this.view.admin);
     });
-    this.app.get("/siswa", (_req, res) => {
+    this.app.get('/siswa', (_req, res) => {
       res.sendFile(this.view.siswa);
     });
-    this.app.use("/api/", router);
+    this.app.use('/api/', router);
   }
 }

@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const siswaSchema = new mongoose.Schema({
   nisn: String,
   nama: String,
-  kelas: String,
+  kelas: String
 });
 
-const siswaService = mongoose.model("siswas", siswaSchema);
+const siswaService = mongoose.model('siswas', siswaSchema);
 
 export default class Siswas {
   service = siswaService;
@@ -29,11 +29,16 @@ export default class Siswas {
     return query;
   }
 
+  async getByKelas(kelas) {
+    const query = await this.service.find({ kelas });
+    return query;
+  }
+
   async editSiswa(_id, data) {
     const query = await this.service.findByIdAndUpdate(
       _id,
       {
-        $set: data,
+        $set: data
       },
       { new: true }
     );

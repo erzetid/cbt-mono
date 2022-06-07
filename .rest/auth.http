@@ -1,10 +1,10 @@
 ### Login
-POST http://localhost:3660/auth
+POST http://localhost:3000/api/auth/admin
 Content-Type: application/json
 
 {
-    "username": "user2022",
-    "password": "pass2022"
+    "username": "admin",
+    "password": "00000000"
 }
 
 ### refresh login
