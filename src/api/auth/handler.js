@@ -195,7 +195,7 @@ export default class AuthHandler extends BaseHandler {
       if (
         typeof plainPassword !== 'string' ||
         plainPassword === '' ||
-        plainPassword.length < 8
+        plainPassword.length < 6
       ) {
         return super.render(res, 400, {
           status: 'error',

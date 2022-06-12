@@ -1,9 +1,3 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -11,15 +5,39 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
+import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { getPengumuman } from '../app/slice/ujianThunk';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function Pengumuman() {
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+export default function Pengumuman() {
+  const distpatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [desc, setDesc] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [dataPengumuman, setDataPengumuman] = React.useState([]);
+
+  React.useEffect(() => {
+    const pengumuman = async () => {
+      const { payload } = await distpatch(getPengumuman());
+      if (payload.status === 'success') setDataPengumuman(payload.data);
+    };
+
+    pengumuman();
+  }, [distpatch]);
+
+  const handleClickOpen = (title, desc) => {
+    setDesc(desc);
+    setTitle(title);
     setOpen(true);
   };
 
@@ -32,35 +50,25 @@ export default function Pengumuman() {
   return (
     <>
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <ListItem alignItems="flex-start" onClick={handleClickOpen}>
-          <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </ListItemAvatar>
-          <ListItemText
-            primary="Brunch this weekend?"
-            secondary={
-              <React.Fragment>
-                {"I'll be in your neighborhood doing errands this…"}
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-        <Divider variant="inset" component="li" />
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          </ListItemAvatar>
-          <ListItemText
-            primary="Summer BBQ"
-            secondary={
-              <React.Fragment>
-                {truncate(
-                  " Wish I could come, but I'm out of town this  Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dicta non distinctio alias dolorem quia nemo provident incidunt aliquid a."
-                )}
-              </React.Fragment>
-            }
-          />
-        </ListItem>
+        {dataPengumuman.map((item) => (
+          <>
+            <ListItem
+              alignItems="flex-start"
+              onClick={() => handleClickOpen(item.judul, item.isi)}
+            >
+              <ListItemAvatar>
+                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+              </ListItemAvatar>
+              <ListItemText
+                primary={item.judul}
+                secondary={
+                  <React.Fragment>{truncate(item.isi)}</React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+          </>
+        ))}
       </List>
       <Dialog
         open={open}
@@ -69,11 +77,10 @@ export default function Pengumuman() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{'Judul Pengumuman'}</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            {desc}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

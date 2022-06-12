@@ -14,40 +14,36 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
-import MuiAlert from "@mui/material/Alert";
-import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import MDTypography from "components/MDTypography";
-
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import { Snackbar, TextField } from "@mui/material";
-import MDButton from "components/MDButton";
-import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { refreshToken } from "store/slice/authThunk";
-import { jwtDeccode } from "utils/jwtDecode";
-import { forwardRef, useEffect, useState } from "react";
-import { getKelas, postKelas, putKelas } from "store/slice/kelasThunk";
+// Material Dashboard 2 React components
+import MuiAlert from "@mui/material/Alert";
+import Card from "@mui/material/Card";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
+import MDTypography from "components/MDTypography";
+import Footer from "examples/Footer";
+// Material Dashboard 2 React example components
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { forwardRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { refreshToken } from "store/slice/authThunk";
+import { getKelas, postKelas, putKelas } from "store/slice/kelasThunk";
 import { getSekolah, putSekolah } from "store/slice/sekolahThunk";
+import { jwtDeccode } from "utils/jwtDecode";
 
 function createData(name, content) {
   return { name, content };

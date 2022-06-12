@@ -22,7 +22,7 @@ const Typography1 = styled(Typography)({
 
 const User = () => {
   const dispatch = useDispatch();
-  const { dataUjian } = useSelector((state) => state.ujian);
+  const { dataUjian, nama } = useSelector((state) => state.ujian);
   useEffect(() => {
     const fetch = async () => {
       await dispatch(refreshToken());
@@ -41,10 +41,10 @@ const User = () => {
         }}
       >
         <CardContent>
-          <AvatarCust alt="Jamaludin" src="/static/images/avatar/2.jpg" />
+          <AvatarCust alt={nama} src="/static/images/avatar/2.jpg" />
 
           <Typography1 color="text.secondary" gutterBottom>
-            Jamaludin
+            {nama}
           </Typography1>
         </CardContent>
       </Card>

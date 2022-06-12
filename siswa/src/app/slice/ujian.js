@@ -9,6 +9,7 @@ import {
 } from './ujianThunk';
 
 const initialState = {
+  nama: '',
   dataUjian: [],
   dataPreTest: {
     ujian: '',
@@ -40,8 +41,9 @@ export const ujianSlice = createSlice({
   },
   extraReducers: {
     [getUjian.fulfilled]: (state, action) => {
-      const { data } = action.payload;
+      const { data, nama } = action.payload;
       state.dataUjian = data;
+      state.nama = nama;
       state.message = '';
     },
     [getUjian.rejected]: (state, action) => {

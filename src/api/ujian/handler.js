@@ -741,18 +741,25 @@ export default class UjianHandler extends BaseHandler {
         _data.map(async (x) => {
           const { _id } = x;
           let statusSiswa = 'Belum dikerjakan';
+          let idScore = '';
           const checkScore = await this.scoreService.getByIdSiswaAndIdUjian(
             idUser,
             _id
           );
-          if (checkScore) statusSiswa = checkScore.status;
-          return { ...x, statusSiswa };
+          if (checkScore) {
+            statusSiswa = checkScore.status;
+            idScore = checkScore._id;
+          }
+          return { ...x, statusSiswa, idScore };
         })
       );
+
+      const { nama } = await this.siswaService.getById(idUser);
 
       return super.render(res, 200, {
         status: 'success',
         message: 'Ujian by kelas siswa berhasil dirender!',
+        nama,
         data
       });
     } catch (error) {

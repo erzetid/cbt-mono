@@ -169,3 +169,49 @@ export const selesaiUjian = createAsyncThunk(
     }
   }
 );
+
+export const getScore = createAsyncThunk(
+  '/ujian/hitung',
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.get(`/ujian/hitung/${payload}`, {
+        headers: {
+          Authorization: 'Bearer ' + states.auth.token //the token is a variable which holds the token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: 'error' } &&
+          rejectWithValue({ message: error.message, status: 'error' })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getPengumuman = createAsyncThunk(
+  '/pengumuman',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.get(`/pengumuman/siswa`, {
+        headers: {
+          Authorization: 'Bearer ' + states.auth.token //the token is a variable which holds the token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: 'error' } &&
+          rejectWithValue({ message: error.message, status: 'error' })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

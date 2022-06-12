@@ -44,22 +44,22 @@ import { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { refreshToken } from "store/slice/authThunk";
+import { deleteGuru, getGuru, postGuru, putGuru } from "store/slice/guruThunk";
 import { getKelas } from "store/slice/kelasThunk";
-import { deleteSiswa, getSiswa, postSiswa, putSiswa } from "store/slice/siswaThunk";
 import { filterKelas, jwtDeccode } from "utils/jwtDecode";
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const columns = [
-  { Header: "nisn", accessor: "nisn", align: "left" },
+  { Header: "nuptk", accessor: "nuptk", align: "left" },
   { Header: "nama", accessor: "nama", width: "45%", align: "left" },
   { Header: "kelas", accessor: "kelas", align: "left" },
   // { Header: "status", accessor: "status", align: "center" },
   { Header: "action", accessor: "action", align: "center" },
 ];
 
-function Siswa() {
+function Guru() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { message, loading, status } = useSelector((state) => state.siswa);
@@ -71,8 +71,6 @@ function Siswa() {
   const [msg, setMsg] = useState(null);
   const [statusAlert, setStatusAlert] = useState("error");
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [nisn, setNisn] = useState("");
   const [nama, setNama] = useState("");
   const [barisSiswa, setBarisSiswa] = useState([]);
@@ -82,7 +80,7 @@ function Siswa() {
   useEffect(() => {
     const checkLogin = async () => {
       const auth = await dispatch(refreshToken());
-      const _siswa = await dispatch(getSiswa());
+      const _siswa = await dispatch(getGuru());
       const _kelas = await dispatch(getKelas());
       setKelasSiswa(_kelas.payload.data);
       setBarisSiswa(setTable(_siswa.payload.data, _kelas.payload.data));
@@ -146,15 +144,15 @@ function Siswa() {
     </MDBox>
   );
 
-  const setTable = (_siswa, _kelas) => {
-    return _siswa.map((item) => {
-      const { kelas, nama, nisn, _id } = item;
+  const setTable = (_guru, _kelass) => {
+    return _guru.map((item) => {
+      const { kelas, nama, nuptk, _id } = item;
       return {
         nama: <Nama name={nama} email="john@creative-tim.com" />,
-        kelas: <Kelas title={filterKelas(_kelas, kelas)} />,
-        nisn: (
+        kelas: <Kelas title={filterKelas(_kelass, kelas)} />,
+        nuptk: (
           <MDTypography component="a" variant="caption" color="text" fontWeight="medium">
-            {nisn}
+            {nuptk}
           </MDTypography>
         ),
         action: (
@@ -192,7 +190,7 @@ function Siswa() {
     setKelas(item.kelas);
   };
   const handleHapus = async (_id) => {
-    const _hapus = await dispatch(deleteSiswa(_id));
+    const _hapus = await dispatch(deleteGuru(_id));
     setMsg(_hapus.payload.message);
     setStatusAlert(_hapus.payload.status);
     handleClickAlert();
@@ -203,13 +201,11 @@ function Siswa() {
 
   const handleOk = async () => {
     if (kelas !== null) {
-      if (username !== "" || password !== "" || nisn !== "" || nama !== "") {
+      if (nisn !== "" || nama !== "") {
         await dispatch(refreshToken());
         const _simpan = await dispatch(
-          postSiswa({
-            username,
-            password,
-            nisn,
+          postGuru({
+            nuptk: nisn,
             kelas,
             nama,
           })
@@ -220,10 +216,8 @@ function Siswa() {
         handleClickAlert();
 
         if (_simpan.payload.status === "success") {
-          setUsername("");
           setKelas("");
           setNisn("");
-          setPassword("");
           setNama("");
           setRefreshTable(refreshTable + 1);
           return setOpen(false);
@@ -235,7 +229,7 @@ function Siswa() {
   const handleOkEdit = async () => {
     if (kelas !== null || nama !== "") {
       await dispatch(refreshToken());
-      const _edit = await dispatch(putSiswa({ _id, kelas, nama }));
+      const _edit = await dispatch(putGuru({ _id, kelas, nama }));
       setMsg(_edit.payload.message);
       setStatusAlert(_edit.payload.status);
 
@@ -268,11 +262,11 @@ function Siswa() {
                   sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <MDTypography variant="h6" color="white">
-                    Data Siswa
+                    Data Guru
                   </MDTypography>
 
                   <MDButton onClick={handleClickOpen} color="info">
-                    Tambah siswa
+                    Tambah Guru
                   </MDButton>
                 </Grid>
               </MDBox>
@@ -290,32 +284,11 @@ function Siswa() {
         </Grid>
       </MDBox>
       <Dialog open={open} fullWidth={true} maxWidth={"xs"} onClose={handleClose}>
-        <DialogTitle>Tambah siswa</DialogTitle>
+        <DialogTitle>Tambah Guru</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
             margin="dense"
-            label="Username"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            error={username === ""}
-          />
-          <TextField
-            margin="dense"
-            label="Password"
-            type="password"
-            fullWidth
-            variant="standard"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={password === ""}
-          />
-          <TextField
-            margin="dense"
-            label="NISN"
+            label="NUPTK"
             type="text"
             fullWidth
             variant="standard"
@@ -366,7 +339,7 @@ function Siswa() {
         </DialogActions>
       </Dialog>
       <Dialog open={openEdit} fullWidth={true} maxWidth={"xs"} onClose={handleCloseEdit}>
-        <DialogTitle>Edit Siswa</DialogTitle>
+        <DialogTitle>Edit Guru</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
@@ -420,4 +393,4 @@ function Siswa() {
   );
 }
 
-export default Siswa;
+export default Guru;

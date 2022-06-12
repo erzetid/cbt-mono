@@ -12,24 +12,23 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { login, coba, refreshToken } from "../../../store/slice/authThunk";
+import Alert from "@mui/material/Alert";
 // @mui material components
 import Card from "@mui/material/Card";
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
-// Authentication layout components
-import BasicLayout from "layouts/authentication/components/BasicLayout";
-
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
+import MDTypography from "components/MDTypography";
+// Authentication layout components
+import BasicLayout from "layouts/authentication/components/BasicLayout";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login, refreshToken } from "../../../store/slice/authThunk";
 import { jwtDeccode } from "../../../utils/jwtDecode";
 
 function Basic() {
@@ -63,7 +62,7 @@ function Basic() {
       }
     };
     checkLogin();
-  }, [token]);
+  }, [token, navigate, dispatch]);
   return (
     <BasicLayout image={bgImage}>
       <Card>

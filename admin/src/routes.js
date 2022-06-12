@@ -41,12 +41,12 @@ import Icon from "@mui/material/Icon";
 import Aktifitas from "layouts/aktifitas";
 import Cetak from "layouts/cetak";
 import Dashboard from "layouts/dashboard";
+import Guru from "layouts/guru";
 import Nilai from "layouts/nilai";
 import Pengaturan from "layouts/pengaturan";
 import Siswa from "layouts/siswa";
 import Soal from "layouts/soal";
-import React from "react";
-const Ujian = React.lazy(() => import("layouts/ujian"));
+import Ujian from "layouts/ujian";
 
 const routes = [
   {
@@ -69,6 +69,15 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Guru",
+    key: "guru",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/guru",
+    path: "/guru",
+    element: <Guru />,
+  },
+  {
+    type: "collapse",
     name: "Soal",
     key: "soal",
     icon: <Icon fontSize="small">article</Icon>,
@@ -83,11 +92,7 @@ const routes = [
     icon: <Icon fontSize="small">quiz</Icon>,
     route: "/ujian",
     path: "/ujian",
-    element: (
-      <React.Suspense fallback="loading....">
-        <Ujian />
-      </React.Suspense>
-    ),
+    element: <Ujian />,
   },
   {
     type: "collapse",

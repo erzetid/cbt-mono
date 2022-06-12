@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import MDButton from "components/MDButton";
 import React, { forwardRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import userIcon from "../../assets/images/icon-user.png";
+import userIcon from "../../assets/images/smk.jpeg";
 
 export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
   const componentRef = React.useRef();
@@ -22,7 +22,7 @@ export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
           margin: 5,
           height: 204,
           width: 322,
-          borderColor: "coral",
+          borderColor: "black",
           borderStyle: "solid",
           display: "inline-block",
         }}
@@ -38,7 +38,7 @@ export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
           }}
         >
           <div style={{ width: "30%" }}>
-            <img src={userIcon} style={{ padding: 5, height: 100, width: 100 }} />
+            <img src={userIcon} style={{ padding: 5, height: 90, width: 75 }} />
           </div>
           <div style={{ width: "70%", fontSize: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>

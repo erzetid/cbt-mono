@@ -13,7 +13,7 @@
     "siswa": "npm start --prefix siswa",
     "server": "nodemon app.js",
     "test": "concurrently \"jest --watch --verbose\" \"npm run test --prefix admin\" \"npm run test --prefix siswa\"",
-    "dev": "export NODE_ENV=development && concurrently \"nodemon\" \"npm run admin\"",
+    "dev": "export NODE_ENV=development && concurrently \"nodemon\" \"npm run admin\" \"npm run siswa\"",
     "build:server": "webpack --mode production",
     "build:all": "rm -rf dist/ && concurrently \"webpack --mode production\" \"npm run build --prefix admin\" \"npm run build --prefix siswa\"",
     "password": "node password.js"

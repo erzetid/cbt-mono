@@ -62,6 +62,7 @@ export default function Pertanyaan() {
         setCountDown((countDown) => countDown - 1);
       }, 1000);
     } else {
+      alert('Waktu kamu sudah habis.');
       handleSelesai();
     }
 
@@ -116,6 +117,14 @@ export default function Pertanyaan() {
 
   const handleSelesai = async () => {
     await dispatch(selesaiUjian(dataJawaban._id));
+    navigate('/');
+  };
+
+  const handleSelesaiOK = async () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm('Apakah anda yakin ingin mengakhiri ujian?')) {
+      handleSelesai();
+    }
   };
 
   return (
@@ -137,7 +146,7 @@ export default function Pertanyaan() {
         >
           {`${minutes}:${seconds}`}
         </Button>
-        <Button size="large" variant="contained">
+        <Button onClick={handleSelesaiOK} size="large" variant="contained">
           Selesai
         </Button>
       </CardContent>
@@ -177,14 +186,6 @@ export default function Pertanyaan() {
           color="success"
         >
           Sebelumnya
-        </Button>
-        <Button
-          onClick={handleSelesai}
-          variant="contained"
-          size="large"
-          color="warning"
-        >
-          Soal
         </Button>
         <Button
           onClick={onClickNext}

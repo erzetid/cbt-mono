@@ -59,7 +59,7 @@ const emptyPengumuman = {
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [jmlSiswa, setJmlSiswa] = useState(0);
@@ -277,6 +277,6 @@ function Dashboard() {
       </Snackbar>
     </DashboardLayout>
   );
-}
+};
 
 export default Dashboard;
