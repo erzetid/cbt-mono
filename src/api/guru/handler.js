@@ -147,7 +147,13 @@ export default class GuruHandler extends BaseHandler {
 
   async putHandler(req, res, _next) {
     try {
-      const { _id, nama, kelas } = req.body;
+      const { nuptk, _id, nama, kelas } = req.body;
+      if (!nuptk) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'NUPTK tidak boleh kosong!'
+        });
+      }
       if (!_id || !mongoose.isValidObjectId(_id)) {
         return res.status(400).json({
           status: 'error',
@@ -178,7 +184,7 @@ export default class GuruHandler extends BaseHandler {
           message: 'Kelas tidak tersedia!'
         });
       }
-      await guru.editGuru(_id, { nama, kelas });
+      await guru.editGuru(_id, { nama, kelas, nuptk });
       return super.render(res, 200, {
         status: 'success',
         message: 'Guru berhasil diubah!'

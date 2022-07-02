@@ -188,6 +188,7 @@ function Guru() {
     setId(item._id);
     setNama(item.nama);
     setKelas(item.kelas);
+    setNisn(item.nuptk);
   };
   const handleHapus = async (_id) => {
     const _hapus = await dispatch(deleteGuru(_id));
@@ -229,7 +230,14 @@ function Guru() {
   const handleOkEdit = async () => {
     if (kelas !== null || nama !== "") {
       await dispatch(refreshToken());
-      const _edit = await dispatch(putGuru({ _id, kelas, nama }));
+      const _edit = await dispatch(
+        putGuru({
+          nuptk: nisn,
+          _id,
+          kelas,
+          nama,
+        })
+      );
       setMsg(_edit.payload.message);
       setStatusAlert(_edit.payload.status);
 
@@ -341,6 +349,16 @@ function Guru() {
       <Dialog open={openEdit} fullWidth={true} maxWidth={"xs"} onClose={handleCloseEdit}>
         <DialogTitle>Edit Guru</DialogTitle>
         <DialogContent>
+          <TextField
+            margin="dense"
+            label="NUPTK"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={nisn}
+            onChange={(e) => setNisn(e.target.value)}
+            error={nisn === ""}
+          />
           <TextField
             margin="dense"
             label="Nama"
