@@ -190,6 +190,9 @@ function Siswa() {
     setId(item._id);
     setNama(item.nama);
     setKelas(item.kelas);
+    setNisn(item.nisn);
+    setUsername(item.username);
+    setPassword(item.firstPassword);
   };
   const handleHapus = async (_id) => {
     const _hapus = await dispatch(deleteSiswa(_id));
@@ -233,9 +236,10 @@ function Siswa() {
   };
 
   const handleOkEdit = async () => {
-    if (kelas !== null || nama !== "") {
+    if (username !== "" || password !== "" || nisn !== "" || nama !== "") {
+      console.log({ _id, username, password, nisn, kelas, nama });
       await dispatch(refreshToken());
-      const _edit = await dispatch(putSiswa({ _id, kelas, nama }));
+      const _edit = await dispatch(putSiswa({ _id, username, password, nisn, kelas, nama }));
       setMsg(_edit.payload.message);
       setStatusAlert(_edit.payload.status);
 
@@ -368,6 +372,37 @@ function Siswa() {
       <Dialog open={openEdit} fullWidth={true} maxWidth={"xs"} onClose={handleCloseEdit}>
         <DialogTitle>Edit Siswa</DialogTitle>
         <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Username"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            error={username === ""}
+          />
+          <TextField
+            margin="dense"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={password === ""}
+          />
+          <TextField
+            margin="dense"
+            label="NISN"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={nisn}
+            onChange={(e) => setNisn(e.target.value)}
+            error={nisn === ""}
+          />
           <TextField
             margin="dense"
             label="Nama"

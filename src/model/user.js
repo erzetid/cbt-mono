@@ -42,6 +42,23 @@ export default class Users {
     return query;
   }
 
+  async editSiswa(idUser, username, password, firstPassword) {
+    const query = await this.service.findOneAndUpdate(
+      {
+        idUser
+      },
+      {
+        $set: {
+          username,
+          password,
+          firstPassword
+        }
+      }
+    );
+
+    return query;
+  }
+
   async getById(_id) {
     const query = await this.service.findById(_id);
 

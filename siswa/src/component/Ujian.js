@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { mulaiUjian, preTest } from '../app/slice/ujianThunk';
 import trainImage from '../asset/train.jpg';
+import WindowFocusHandler from './WindowFocusHandler';
 
 export default function Ujian() {
   const { dataPreTest, message, idScore } = useSelector((state) => state.ujian);
@@ -49,6 +50,7 @@ export default function Ujian() {
   };
   return (
     <Card>
+      <WindowFocusHandler />
       <CardMedia
         component="img"
         height="140"

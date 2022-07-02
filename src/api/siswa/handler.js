@@ -12,12 +12,26 @@ const user = new Users();
 export default class Siswahandler extends BaseHandler {
   async getHandler(req, res, _next) {
     try {
-      const data = await siswa.getAll();
+      const _data = await siswa.getAll();
+
+      const data = Promise.all(
+        _data.map(async (x) => {
+          const { username, firstPassword } = await user.getBySiswa(x._id);
+          return {
+            _id: x._id,
+            nisn: x.nisn,
+            kelas: x.kelas,
+            nama: x.nama,
+            username,
+            firstPassword
+          };
+        })
+      );
 
       return super.render(res, 200, {
         status: 'success',
         message: 'Data siswa berhasil dirender!',
-        data
+        data: await data
       });
     } catch (error) {
       console.log(error);
@@ -35,7 +49,6 @@ export default class Siswahandler extends BaseHandler {
       const data = Promise.all(
         _data.map(async (x) => {
           const { username, firstPassword } = await user.getBySiswa(x._id);
-          console.log(x);
           return {
             _id: x._id,
             nisn: x.nisn,
@@ -178,7 +191,14 @@ export default class Siswahandler extends BaseHandler {
 
   async putHandler(req, res, _next) {
     try {
-      const { _id, nama, kelas } = req.body;
+      const {
+        _id,
+        username,
+        password: plainPassword,
+        nisn,
+        nama,
+        kelas
+      } = req.body;
       if (
         typeof _id !== 'string' ||
         _id === '' ||
@@ -213,13 +233,51 @@ export default class Siswahandler extends BaseHandler {
           message: 'Kelas tidak tersedia!'
         });
       }
+      const validateSpace = (str) => /\s/.test(str);
+      if (typeof username !== 'string' || username === '') {
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Username tidak boleh kosong!'
+        });
+      }
 
-      const siswas = await siswa.editSiswa(_id, { nama, kelas });
+      if (
+        typeof plainPassword !== 'string' ||
+        plainPassword === '' ||
+        plainPassword.length < 8
+      ) {
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Password minimal 8 karakter!'
+        });
+      }
+
+      if (validateSpace(plainPassword) || validateSpace(username))
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Username dan password tidak boleh ada spasi!'
+        });
+
+      if (typeof nisn !== 'string' || nisn === '') {
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Nisn tidak boleh kosong!'
+        });
+      }
+      const salt = bcrypt.genSaltSync(10);
+      const password = bcrypt.hashSync(plainPassword, salt);
+
+      const siswas = await siswa.editSiswa(_id, {
+        nisn,
+        nama,
+        kelas
+      });
       if (!siswas)
         return super.render(res, 400, {
           status: 'error',
           message: 'Siswa tidak ditemukan!'
         });
+      await user.editSiswa(_id, username, password, plainPassword);
 
       return super.render(res, 200, {
         status: 'success',
