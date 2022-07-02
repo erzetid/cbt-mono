@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const sekolahSchema = new mongoose.Schema({
   namaSekolah: String,
@@ -7,22 +7,23 @@ const sekolahSchema = new mongoose.Schema({
   alamatSekolah: String,
   logo: String,
   tahunPelajaranSekarang: String,
-  kepsek: String,
+  kepalaSekolah: String
 });
 
-const sekolahService = mongoose.model("sekolahs", sekolahSchema);
+const sekolahService = mongoose.model('sekolahs', sekolahSchema);
 
 export default class Sekolahs {
   service = sekolahService;
 
   async initial() {
     const data = {
-      namaSekolah: "",
-      email: "",
-      telepon: "",
-      alamatSekolah: "",
-      logo: "logo",
-      tahunPelajaranSekarang: "2022/2023",
+      namaSekolah: '',
+      email: '',
+      telepon: '',
+      alamatSekolah: '',
+      logo: 'logo',
+      tahunPelajaranSekarang: '2022/2023',
+      kepalaSekolah: ''
     };
 
     const sekolah = new this.service(data);

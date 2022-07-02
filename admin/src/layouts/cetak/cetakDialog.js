@@ -34,7 +34,7 @@ export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginTop: 10,
+            marginTop: 5,
           }}
         >
           <div style={{ width: "30%" }}>
@@ -59,9 +59,10 @@ export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
             </div>
           </div>
         </div>
-        <div style={{ marginRight: 5, textAlign: "right", marginTop: -10 }}>
-          <h6>Brebes, {new Date().toLocaleString()}</h6>
+        <div style={{ marginRight: 5, textAlign: "right", marginTop: -15 }}>
+          <h6>Brebes, {new Date().toLocaleDateString()}</h6>
           <div style={{ fontSize: 12 }}>Kepala Sekolah</div>
+          <h6>Ali Fauzan, MH</h6>
         </div>
       </div>
     );
@@ -80,8 +81,11 @@ export default function CetakDialog({ open, handleClose, data: dataSiswa }) {
       <Dialog fullScreen open={open} onClose={handleClose}>
         <DialogTitle>Cetak Kartu</DialogTitle>
         <div style={{ marginRight: 50, marginLeft: 50, marginBottom: 10 }}>
-          <MDButton color={"primary"} onClick={handlePrint}>
+          <MDButton color={"primary"} onClick={handlePrint} style={{ marginRight: 5 }}>
             Print
+          </MDButton>
+          <MDButton color={"secondary"} onClick={handleClose}>
+            Tutup
           </MDButton>
         </div>
         <DialogContent>{<ComponentToPrint content={_data} ref={componentRef} />}</DialogContent>

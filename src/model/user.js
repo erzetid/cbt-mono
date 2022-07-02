@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   role: String,
-  refreshToken: String
+  refreshToken: String,
+  firstPassword: String
 });
 
 const userService = mongoose.model('users', userSchema);
@@ -19,6 +20,23 @@ export default class Users {
       throw new Error('username tidak tersedia!');
     }
     const userBaru = new this.service({ idUser, username, password, role });
+    const query = await userBaru.save();
+
+    return query;
+  }
+
+  async simpanSiswa(idUser, username, password, role, firstPassword) {
+    const checkUsername = await this.getUsername(username);
+    if (checkUsername) {
+      throw new Error('username tidak tersedia!');
+    }
+    const userBaru = new this.service({
+      idUser,
+      username,
+      password,
+      role,
+      firstPassword
+    });
     const query = await userBaru.save();
 
     return query;

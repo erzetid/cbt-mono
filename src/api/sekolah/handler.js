@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import Sekolahs from "../../model/sekolah.js";
-import BaseHandler from "../default.js";
+import mongoose from 'mongoose';
+import Sekolahs from '../../model/sekolah.js';
+import BaseHandler from '../default.js';
 
 const sekolah = new Sekolahs();
 
@@ -11,21 +11,21 @@ export default class SekolahHandler extends BaseHandler {
       if (!data.length) {
         const initial = await sekolah.initial();
         return super.render(res, 201, {
-          status: "success",
-          message: "Initial sekolah berhasail!",
-          data: initial,
+          status: 'success',
+          message: 'Initial sekolah berhasail!',
+          data: initial
         });
       }
       return super.render(res, 201, {
-        status: "success",
-        message: "Initial sekolah berhasail!",
-        data: data[0],
+        status: 'success',
+        message: 'Initial sekolah berhasail!',
+        data: data[0]
       });
     } catch (error) {
       console.log(error);
       return super.render(res, 500, {
-        status: "error",
-        message: "Mohon maaf, kesalahan server!",
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
       });
     }
   }
@@ -40,53 +40,54 @@ export default class SekolahHandler extends BaseHandler {
         alamatSekolah,
         logo,
         tahunPelajaranSekarang,
+        kepalaSekolah
       } = req.body;
 
-      if (typeof namaSekolah !== "string" || namaSekolah === "") {
+      if (typeof namaSekolah !== 'string' || namaSekolah === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "Nama sekolah tidak boleh kosong!",
+          status: 'error',
+          message: 'Nama sekolah tidak boleh kosong!'
         });
       }
 
-      if (typeof email !== "string" || email === "") {
+      if (typeof email !== 'string' || email === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "email tidak boleh kosong!",
+          status: 'error',
+          message: 'email tidak boleh kosong!'
         });
       }
-      if (typeof telepon !== "string" || telepon === "") {
+      if (typeof telepon !== 'string' || telepon === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "telepon tidak boleh kosong!",
+          status: 'error',
+          message: 'telepon tidak boleh kosong!'
         });
       }
-      if (typeof alamatSekolah !== "string" || alamatSekolah === "") {
+      if (typeof alamatSekolah !== 'string' || alamatSekolah === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "Alamat sekolah tidak boleh kosong!",
+          status: 'error',
+          message: 'Alamat sekolah tidak boleh kosong!'
         });
       }
-      if (typeof logo !== "string" || logo === "") {
+      if (typeof logo !== 'string' || logo === '') {
         return super.render(res, 400, {
-          status: "error",
-          message: "Logo sekolah tidak boleh kosong!",
+          status: 'error',
+          message: 'Logo sekolah tidak boleh kosong!'
         });
       }
       if (
-        typeof tahunPelajaranSekarang !== "string" ||
-        tahunPelajaranSekarang === ""
+        typeof tahunPelajaranSekarang !== 'string' ||
+        tahunPelajaranSekarang === ''
       ) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Tahun pelajaran sekarang sekolah tidak boleh kosong!",
+          status: 'error',
+          message: 'Tahun pelajaran sekarang sekolah tidak boleh kosong!'
         });
       }
 
       if (!mongoose.isValidObjectId(_id)) {
         return super.render(res, 400, {
-          status: "error",
-          message: "Tahun pelajaran sekarang sekolah tidak boleh kosong!",
+          status: 'error',
+          message: 'Tahun pelajaran sekarang sekolah tidak boleh kosong!'
         });
       }
 
@@ -97,22 +98,23 @@ export default class SekolahHandler extends BaseHandler {
         alamatSekolah,
         logo,
         tahunPelajaranSekarang,
+        kepalaSekolah
       });
 
       if (!edit)
         return super.render(res, 400, {
-          status: "error",
-          message: "Update sekolah gagal!",
+          status: 'error',
+          message: 'Update sekolah gagal!'
         });
       return super.render(res, 201, {
-        status: "success",
-        message: "Update sekolah berhasail!",
+        status: 'success',
+        message: 'Update sekolah berhasail!'
       });
     } catch (error) {
       console.log(error);
       return super.render(res, 500, {
-        status: "error",
-        message: "Mohon maaf, kesalahan server!",
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
       });
     }
   }

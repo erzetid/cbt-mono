@@ -19,13 +19,13 @@ export default class AuthHandler extends BaseHandler {
         });
       }
 
-      const cekRefreshToken = await user.getRefreshToken(refreshToken);
-      if (!cekRefreshToken) {
-        return super.render(res, 401, {
-          status: 'error',
-          message: 'Access Denied / Unauthorized request'
-        });
-      }
+      // const cekRefreshToken = await user.getRefreshToken(refreshToken);
+      // if (!cekRefreshToken) {
+      //   return super.render(res, 401, {
+      //     status: 'error',
+      //     message: 'Access Denied / Unauthorized request'
+      //   });
+      // }
 
       const verifyRefresToken = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
 

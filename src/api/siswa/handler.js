@@ -30,12 +30,27 @@ export default class Siswahandler extends BaseHandler {
   async getByKelasHandler(req, res, _next) {
     try {
       const id = req.params.id;
-      const data = await siswa.getByKelas(id);
+      const _data = await siswa.getByKelas(id);
+
+      const data = Promise.all(
+        _data.map(async (x) => {
+          const { username, firstPassword } = await user.getBySiswa(x._id);
+          console.log(x);
+          return {
+            _id: x._id,
+            nisn: x.nisn,
+            kelas: x.kelas,
+            nama: x.nama,
+            username,
+            firstPassword
+          };
+        })
+      );
 
       return super.render(res, 200, {
         status: 'success',
         message: 'Data siswa berhasil dirender!',
-        data
+        data: await data
       });
     } catch (error) {
       console.log(error);
@@ -140,7 +155,13 @@ export default class Siswahandler extends BaseHandler {
       }
 
       const simpan = await siswa.simpan(nisn, nama, kelas);
-      await user.simpan(simpan._id, username, password, 'siswa');
+      await user.simpanSiswa(
+        simpan._id,
+        username,
+        password,
+        'siswa',
+        plainPassword
+      );
 
       return super.render(res, 201, {
         status: 'success',

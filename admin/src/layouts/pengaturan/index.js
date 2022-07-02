@@ -74,6 +74,7 @@ const emptySekolah = {
   alamatSekolah: "",
   logo: "",
   tahunPelajaranSekarang: "",
+  kepalaSekolah: "",
 };
 
 function Pengaturan() {
@@ -292,6 +293,15 @@ function Pengaturan() {
                   variant="outlined"
                   value={dataSekolah.alamatSekolah}
                   onChange={(e) => editSekolah(e, "alamatSekolah")}
+                />
+                <TextField
+                  sx={{ mb: 1 }}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Kepala Sekolah"
+                  variant="outlined"
+                  value={dataSekolah.kepalaSekolah}
+                  onChange={(e) => editSekolah(e, "kepalaSekolah")}
                 />
                 <MDButton onClick={() => clickSekolah()} fullWidth color="info">
                   Simpan

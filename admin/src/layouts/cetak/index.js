@@ -68,8 +68,8 @@ const Cetak = () => {
           return {
             nama: item.nama,
             kelas: filterKelas(kelasSiswa, item.kelas),
-            username: item.nisn,
-            password: item.nisn,
+            username: item.username,
+            password: item.firstPassword,
           };
         });
         setDataSiswa(dataCetak);
