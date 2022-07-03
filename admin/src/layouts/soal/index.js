@@ -14,19 +14,21 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router-dom";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
+import MDTypography from "components/MDTypography";
+import Footer from "examples/Footer";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import MDTypography from "components/MDTypography";
 
+import { FileUpload } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import {
   Dialog,
   DialogActions,
@@ -37,18 +39,16 @@ import {
   MenuItem,
   Snackbar,
 } from "@mui/material";
-import { forwardRef, useEffect, useState } from "react";
-import DataTable from "examples/Tables/DataTable";
 import MuiAlert from "@mui/material/Alert";
 import MDBadge from "components/MDBadge";
-import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { refreshToken } from "store/slice/authThunk";
-import { jwtDeccode } from "utils/jwtDecode";
+import MDInput from "components/MDInput";
+import DataTable from "examples/Tables/DataTable";
+import { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSoal, deleteSoalById } from "store/slice/soalThunk";
-import { setJawaban } from "store/slice/soalThunk";
-import { postSoal } from "store/slice/soalThunk";
+import { refreshToken } from "store/slice/authThunk";
+import { deleteSoalById, getSoal, importSoal, postSoal } from "store/slice/soalThunk";
+import { jwtDeccode } from "utils/jwtDecode";
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -56,6 +56,9 @@ const Alert = forwardRef(function Alert(props, ref) {
 function Soal() {
   const [menu, setMenu] = useState(null);
   const [dialogSoal, setDialogSoal] = useState(false);
+  const [dialogImport, setDialogImport] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loadUpload, setLoadUpload] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
@@ -89,6 +92,9 @@ function Soal() {
     setAlerData({ msg: _delete.payload.message, status: _delete.payload.status });
     setOpenAlert(true);
   };
+  const downloadFile = (id) => {
+    window.location.href = "https://us12.online/api/soal/export/" + id;
+  };
   const { columns, rows } = {
     columns: [
       { Header: "Kode Soal", accessor: "kodeSoal", width: "15%", align: "left" },
@@ -116,10 +122,18 @@ function Soal() {
             <Icon
               sx={{ cursor: "pointer", mr: 1 }}
               onClick={() => navigate("/manage_soal?id_soal=" + _id)}
-              color="success"
+              color="info"
               fontSize="small"
             >
               visibility
+            </Icon>
+            <Icon
+              sx={{ cursor: "pointer" }}
+              color="success"
+              onClick={() => downloadFile(_id)}
+              fontSize="small"
+            >
+              file_download
             </Icon>
             <Icon
               sx={{ cursor: "pointer" }}
@@ -138,8 +152,14 @@ function Soal() {
   const openDialogSoal = () => {
     setDialogSoal(true);
   };
+  const openDialogImport = () => {
+    setDialogImport(true);
+  };
   const closeDialogSoal = () => {
     setDialogSoal(false);
+  };
+  const closeDialogImport = () => {
+    setDialogImport(false);
   };
   const handleCloseAlert = (event, reason) => {
     if (reason === "clickaway") {
@@ -163,6 +183,22 @@ function Soal() {
     }
   };
 
+  const uploadFile = async () => {
+    if (selectedFile) {
+      setLoadUpload(true);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const upload = await dispatch(importSoal(formData));
+      setAlerData({ msg: upload.payload.message, status: upload.payload.status });
+      setOpenAlert(true);
+      if (upload.payload.status === "success") {
+        setDialogImport(false);
+        setSelectedFile(null);
+      }
+      setLoadUpload(false);
+    }
+  };
+
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
@@ -182,6 +218,7 @@ function Soal() {
       onClose={closeMenu}
     >
       <MenuItem onClick={() => openDialogSoal()}>Buat</MenuItem>
+      <MenuItem onClick={() => openDialogImport()}>Import</MenuItem>
     </Menu>
   );
 
@@ -263,6 +300,41 @@ function Soal() {
         <DialogActions>
           <MDButton onClick={closeDialogSoal}>Tutup</MDButton>
           <MDButton onClick={tambahSoal}>Simpan</MDButton>
+        </DialogActions>
+      </Dialog>
+      <Dialog fullWidth maxWidth={"xs"} open={dialogImport} onClose={closeDialogImport}>
+        <DialogTitle>Import Soal</DialogTitle>
+
+        <DialogContent>
+          <MDBox
+            fullWidth
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              mt: 1,
+            }}
+          >
+            <MDInput
+              accept=".xlsx"
+              id="icon-button-file"
+              type="file"
+              onChange={(e) => setSelectedFile(e.target.files[0])}
+            />
+          </MDBox>
+        </DialogContent>
+        <DialogActions>
+          <MDButton onClick={closeDialogImport}>Tutup</MDButton>
+          <LoadingButton
+            loading={loadUpload}
+            loadingPosition="start"
+            startIcon={<FileUpload />}
+            color="primary"
+            onClick={uploadFile}
+          >
+            Upload
+          </LoadingButton>
         </DialogActions>
       </Dialog>
       <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>

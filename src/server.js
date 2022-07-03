@@ -16,7 +16,9 @@ export default class Server {
       staticAdmin: path.join(path.resolve(), 'dist/admin/'),
       admin: path.join(path.resolve(), 'dist/admin/index.html'),
       staticSiswa: path.join(path.resolve(), 'dist/siswa/'),
-      siswa: path.join(path.resolve(), 'dist/siswa/index.html')
+      siswa: path.join(path.resolve(), 'dist/siswa/index.html'),
+      assetStatic: path.join(path.resolve(), 'dist/assets'),
+      assetsStatic: path.join(path.resolve(), '/assets')
     };
     this.middelwares();
     this.routes();
@@ -33,6 +35,8 @@ export default class Server {
     });
     this.app.use(express.static(this.view.staticAdmin));
     this.app.use(express.static(this.view.staticSiswa));
+    this.app.use(express.static(this.view.assetStatic));
+    this.app.use(express.static(this.view.assetStatic));
     this.app.use((err, _req, res, next) => {
       if (err instanceof SyntaxError) {
         return res.status(400).json({
