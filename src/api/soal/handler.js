@@ -446,4 +446,25 @@ export default class SoalHandler extends BaseHandler {
       });
     }
   }
+  async deleteFileHandler(req, res, _next) {
+    try {
+      const _id = req.params._id;
+      if (!mongoose.isValidObjectId(_id))
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Id butir soal tidak ditemukan!'
+        });
+      await soal.deleteFileSoal(_id);
+      return super.render(res, 200, {
+        status: 'success',
+        message: 'Hapus file berhasil!'
+      });
+    } catch (error) {
+      console.log(error);
+      return super.render(res, 500, {
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
+      });
+    }
+  }
 }
