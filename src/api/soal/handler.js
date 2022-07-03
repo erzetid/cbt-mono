@@ -454,7 +454,7 @@ export default class SoalHandler extends BaseHandler {
           status: 'error',
           message: 'Id butir soal tidak ditemukan!'
         });
-      await soal.deleteFileSoal(_id);
+      await soal.deleteFile(_id);
       return super.render(res, 200, {
         status: 'success',
         message: 'Hapus file berhasil!'
