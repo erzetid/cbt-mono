@@ -93,6 +93,19 @@ export default class Soals {
     return query;
   }
 
+  async deleteFile(_idButirSoal) {
+    const query = await this.service.findOneAndUpdate(
+      { 'butir._id': _idButirSoal },
+      {
+        $set: {
+          'butir.$.file': null
+        }
+      },
+      { new: true }
+    );
+    return query;
+  }
+
   async findOpsi(idOpsi) {
     return await this.service.findOne({
       'butir.pilihan._id': idOpsi

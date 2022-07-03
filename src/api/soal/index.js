@@ -23,6 +23,7 @@ router.get('/export/:_id', soalHandler.exportHandler);
 router.get('/:_id', verifyTokenAdmin, soalHandler.getByIdhandler);
 router.get('/per_soal/:_id', verifyTokenAdmin, soalHandler.getPerSoal);
 router.post('/', verifyTokenAdmin, soalHandler.postHandler);
+router.delete('/file/:_id', verifyTokenAdmin, soalHandler.deleteFileHandler);
 router.delete('/:_id', verifyTokenAdmin, soalHandler.deleteHandler);
 router.put('/pertanyaan', verifyTokenAdmin, soalHandler.edipertanyaanHandler);
 router.put('/opsi', verifyTokenAdmin, soalHandler.editOpsiJawaban);

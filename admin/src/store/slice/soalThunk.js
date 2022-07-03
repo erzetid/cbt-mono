@@ -193,3 +193,25 @@ export const upload = createAsyncThunk(
     }
   }
 );
+export const deleteFileSoal = createAsyncThunk(
+  "/soal/file",
+  async (id, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.delete(`/soal/file/${id}`, {
+        headers: {
+          Authorization: "Bearer " + states.auth.token, //the token is a variable which holds the token
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: "error" } &&
+          rejectWithValue({ message: error.message, status: "error" })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

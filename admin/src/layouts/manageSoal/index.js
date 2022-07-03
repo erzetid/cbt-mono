@@ -53,6 +53,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { refreshToken } from "store/slice/authThunk";
 import { change } from "store/slice/draftJs";
 import {
+  deleteFileSoal,
   editPertanyaan,
   getPerSoalById,
   getSoalById,
@@ -173,7 +174,6 @@ const ManageSoal = () => {
       formData.append("file", selectedFile);
       formData.append("_id", perSoal._id);
       const _upload = await dispatch(upload(formData));
-      console.log(_upload);
       setAlerData({ msg: _upload.payload.message, status: _upload.payload.status });
       setOpenAlert(true);
       if (_upload.payload.status === "success") {
@@ -242,7 +242,15 @@ const ManageSoal = () => {
     }
   };
 
-  const deleteFile = async () => {};
+  const deleteFile = async () => {
+    // perSoal._id
+    const _data = await dispatch(deleteFileSoal(perSoal._id));
+    setAlerData({ msg: _data.payload.message, status: _data.payload.status });
+    setOpenAlert(true);
+    if (_data.payload.status === "success") {
+      clickBtnColor({ target: { name: perSoal._id } });
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -266,7 +274,12 @@ const ManageSoal = () => {
                         <MDBox sx={{ marginTop: 2, marginBottom: 2 }}>
                           {renderFile()}
                           {perSoal.file && (
-                            <Icon sx={{ cursor: "pointer" }} color="error" fontSize="medium">
+                            <Icon
+                              sx={{ cursor: "pointer" }}
+                              color="error"
+                              fontSize="medium"
+                              onClick={deleteFile}
+                            >
                               delete_forever
                             </Icon>
                           )}
