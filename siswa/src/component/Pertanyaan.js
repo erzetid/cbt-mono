@@ -17,16 +17,17 @@ import {
   selesaiUjian,
   updateJawaban
 } from '../app/slice/ujianThunk';
+import WindowFocusHandler from './WindowFocusHandler';
 
 const htmlParser = new HTMLparser.Parser();
 export default function Pertanyaan() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { soal, dataJawaban } = useSelector((state) => state.ujian);
   const [countDown, setCountDown] = useState(0);
   const [runTimer, setRunTimer] = useState(true);
   const [nomor, setNomor] = useState(0);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!searchParams.get('id')) {
@@ -80,6 +81,7 @@ export default function Pertanyaan() {
   const minutes = String(Math.floor(countDown / 60)).padStart(2, 0);
 
   const onClickNext = async () => {
+    console.log(soal);
     if (nomor < dataJawaban.jawaban.length) {
       await dispatch(
         pertanyaan({
@@ -126,8 +128,57 @@ export default function Pertanyaan() {
     }
   };
 
+  const isVideo = (filename) => filename && filename.includes('mp4');
+  const isImage = (filename) =>
+    (filename && filename.includes('png')) ||
+    filename.includes('jpeg') ||
+    filename.includes('jpg');
+  const isAudio = (filename) => filename && filename.includes('mp3');
+
+  const renderFile = () => {
+    const filename = soal.file;
+    if (!filename) return null;
+    const source = 'http://localhost:5000/assets/' + filename;
+    if (isVideo(filename)) {
+      return (
+        <video
+          width="90%"
+          height="auto"
+          controls
+          style={{ margin: 'auto', display: 'block' }}
+        >
+          <source src={source} />
+        </video>
+      );
+    } else if (isImage(filename)) {
+      return (
+        <img
+          src={source}
+          width="90%"
+          height="auto"
+          alt="gambar"
+          style={{ margin: 'auto', display: 'block' }}
+        />
+      );
+    } else if (isAudio(filename)) {
+      return (
+        <audio
+          width="90%"
+          height="auto"
+          style={{ margin: 'auto', display: 'block' }}
+          controls
+        >
+          <source src={source} />
+        </audio>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <Card>
+      <WindowFocusHandler />
       <CardContent
         sx={{
           display: 'flex',
@@ -149,6 +200,7 @@ export default function Pertanyaan() {
           Selesai
         </Button>
       </CardContent>
+      {renderFile()}
       <Typography sx={{ padding: 4 }}>{htmlParser.parse(soal.soal)}</Typography>
 
       <CardContent

@@ -712,11 +712,11 @@ export default class UjianHandler extends BaseHandler {
           status: 'error',
           message: 'Id pertanyaan tidak ditemukan!'
         });
-      const { soal, pilihan, _id } = data;
+      const { soal, pilihan, _id, file } = data;
       return super.render(res, 200, {
         status: 'success',
         message: 'Soal berhasil ditemukan!',
-        data: { soal, pilihan, _id }
+        data: { soal, pilihan, _id, file }
       });
     } catch (error) {
       console.log(error);

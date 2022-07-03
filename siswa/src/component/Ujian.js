@@ -18,14 +18,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { mulaiUjian, preTest } from '../app/slice/ujianThunk';
 import trainImage from '../asset/train.jpg';
-import WindowFocusHandler from './WindowFocusHandler';
 
 export default function Ujian() {
-  const { dataPreTest, message, idScore } = useSelector((state) => state.ujian);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { dataPreTest, message, idScore } = useSelector((state) => state.ujian);
   const [searchParams, setSearchParams] = useSearchParams();
   const [token, setToken] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (idScore) {
@@ -48,9 +47,9 @@ export default function Ujian() {
       await dispatch(mulaiUjian({ token, idUjian: searchParams.get('id') }));
     }
   };
+
   return (
     <Card>
-      <WindowFocusHandler />
       <CardMedia
         component="img"
         height="140"

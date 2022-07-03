@@ -26,7 +26,8 @@ const initialState = {
   soal: {
     soal: '',
     pilihan: [],
-    _id: ''
+    _id: '',
+    file: ''
   },
   isSelesai: false
 };
