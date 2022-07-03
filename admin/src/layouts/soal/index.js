@@ -92,7 +92,7 @@ function Soal() {
     setOpenAlert(true);
   };
   const downloadFile = (id) => {
-    window.location.href = "https://us12.online/api/soal/export/" + id;
+    window.location.href = "http://localhost:5000/api/soal/export/" + id;
   };
   const { columns, rows } = {
     columns: [

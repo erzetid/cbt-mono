@@ -138,7 +138,7 @@ export default function Pertanyaan() {
   const renderFile = () => {
     const filename = soal.file;
     if (!filename) return null;
-    const source = 'http://localhost:5000/assets/' + filename;
+    const source = 'http://localhost:5000/dist/assets/' + filename;
     if (isVideo(filename)) {
       return (
         <video

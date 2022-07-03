@@ -13,7 +13,7 @@ export default class SoalHandler extends BaseHandler {
       const re = /(\.xlsx)$/i;
       if (!re.exec(req.file.originalname)) {
         fs.unlinkSync(
-          path.join(path.resolve(), 'assets/' + req.file.originalname)
+          path.join(path.resolve(), 'dist/assets/' + req.file.originalname)
         );
         return super.render(res, 400, {
           status: 'error',
@@ -115,7 +115,7 @@ export default class SoalHandler extends BaseHandler {
       });
       const pathExport = path.join(
         path.resolve(),
-        'assets/' + getSoal.nama + '.xlsx'
+        'dist/assets/' + getSoal.nama + '.xlsx'
       );
       await workbook.xlsx.writeFile(pathExport);
       // const data = await workbook.xlsx.writeFile(`${pathExport}/users.xlsx`);
@@ -415,7 +415,7 @@ export default class SoalHandler extends BaseHandler {
       const { _id } = req.body;
       const { originalname, size } = req.file;
       if (size > 5242880) {
-        fs.unlinkSync(path.join(path.resolve(), 'assets/' + originalname));
+        fs.unlinkSync(path.join(path.resolve(), 'dist/assets/' + originalname));
         return super.render(res, 400, {
           status: 'error',
           message: 'Ukuran file maksimal 5MB!'

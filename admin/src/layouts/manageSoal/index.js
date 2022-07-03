@@ -222,7 +222,7 @@ const ManageSoal = () => {
   const renderFile = () => {
     const filename = perSoal.file;
     if (!filename) return null;
-    const source = "http://localhost:5000/assets/" + perSoal.file;
+    const source = "http://localhost:5000/dist/assets/" + perSoal.file;
     if (isVideo(filename)) {
       return (
         <video width="250" controls>

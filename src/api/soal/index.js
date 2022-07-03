@@ -6,7 +6,7 @@ import SoalHandler from './handler.js';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(path.resolve(), 'assets/'));
+    cb(null, path.join(path.resolve(), 'dist/assets/'));
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
