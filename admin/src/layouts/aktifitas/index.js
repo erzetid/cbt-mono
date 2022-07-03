@@ -65,7 +65,6 @@ const Aktifitas = () => {
   }, [refreshTable]);
 
   const handleClickReset = async (id) => {
-    await dispatch(refreshToken());
     await dispatch(deleteLogs(id));
     setRefreshTable(!refreshTable);
   };

@@ -36,7 +36,7 @@ export default class Server {
     this.app.use(express.static(this.view.staticAdmin));
     this.app.use(express.static(this.view.staticSiswa));
     this.app.use(express.static(this.view.assetStatic));
-    this.app.use(express.static(this.view.assetStatic));
+    this.app.use('/assets', express.static(this.view.assetsStatic));
     this.app.use((err, _req, res, next) => {
       if (err instanceof SyntaxError) {
         return res.status(400).json({

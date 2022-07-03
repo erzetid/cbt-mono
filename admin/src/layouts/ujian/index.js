@@ -123,21 +123,18 @@ function Ujian() {
   };
 
   const handleSimpan = async () => {
-    await dispatch(refreshToken());
     const _tambah = await dispatch(postUjian(formTambahUjian));
     setAlerData({ msg: _tambah.payload.message, status: _tambah.payload.status });
     setOpenAlert(true);
     if (_tambah.payload.status === "success") setDialogSoal(false);
   };
   const handleHpsUjian = async (_id) => {
-    await dispatch(refreshToken());
     const _hapus = await dispatch(deleteUjianById(_id));
     setAlerData({ msg: _hapus.payload.message, status: _hapus.payload.status });
     setOpenAlert(true);
     if (_hapus.payload.status === "success") setDialogSoal(false);
   };
   const handleOnUjian = async (_id) => {
-    await dispatch(refreshToken());
     const _on = await dispatch(actifkanUjian(_id));
     setAlerData({ msg: _on.payload.message, status: _on.payload.status });
     setOpenAlert(true);
@@ -145,7 +142,6 @@ function Ujian() {
   };
 
   const handleOffUjian = async (_id) => {
-    await dispatch(refreshToken());
     const _off = await dispatch(nonaktifkanUjian(_id));
     setAlerData({ msg: _off.payload.message, status: _off.payload.status });
     setOpenAlert(true);

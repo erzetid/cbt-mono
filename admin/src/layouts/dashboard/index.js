@@ -116,7 +116,6 @@ const Dashboard = () => {
 
   const handlePengumuman = () => setOpenDialog(!openDialog);
   const handleHpsPengumuman = async (_id) => {
-    await dispatch(refreshToken());
     const _delete = await dispatch(deletePengumuman(_id));
     setAlerData({ msg: _delete.payload.message, status: _delete.payload.status });
     setOpenAlert(true);
@@ -145,7 +144,6 @@ const Dashboard = () => {
   };
 
   const handleSimpanPengumuman = async () => {
-    await dispatch(refreshToken());
     const _pengumuman = await dispatch(postPengumuman(formPengumuman));
     if (_pengumuman.payload.status === "success") {
       onCloseDialog();

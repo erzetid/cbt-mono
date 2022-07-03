@@ -28,6 +28,12 @@ router.put('/pertanyaan', verifyTokenAdmin, soalHandler.edipertanyaanHandler);
 router.put('/opsi', verifyTokenAdmin, soalHandler.editOpsiJawaban);
 router.put('/jawaban', verifyTokenAdmin, soalHandler.setJawaban);
 router.post(
+  '/upload',
+  upload.single('file'),
+  verifyTokenAdmin,
+  soalHandler.uploadHandler
+);
+router.post(
   '/import',
   upload.single('file'),
   verifyTokenAdmin,

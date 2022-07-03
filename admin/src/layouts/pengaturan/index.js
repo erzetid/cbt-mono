@@ -139,7 +139,6 @@ function Pengaturan() {
   const closeKelasDialog = () => setKelasDialog(false);
   const onClickTmbhKelas = async () => {
     let clickKelas;
-    await dispatch(refreshToken());
     if (tipeDialogKelas === "tambah") {
       clickKelas = await dispatch(postKelas({ nama: kelasValue }));
     } else {

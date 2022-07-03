@@ -207,7 +207,6 @@ function Siswa() {
   const handleOk = async () => {
     if (kelas !== null) {
       if (username !== "" || password !== "" || nisn !== "" || nama !== "") {
-        await dispatch(refreshToken());
         const _simpan = await dispatch(
           postSiswa({
             username,
@@ -238,7 +237,6 @@ function Siswa() {
   const handleOkEdit = async () => {
     if (username !== "" || password !== "" || nisn !== "" || nama !== "") {
       console.log({ _id, username, password, nisn, kelas, nama });
-      await dispatch(refreshToken());
       const _edit = await dispatch(putSiswa({ _id, username, password, nisn, kelas, nama }));
       setMsg(_edit.payload.message);
       setStatusAlert(_edit.payload.status);

@@ -2,7 +2,9 @@ import mongoose from 'mongoose';
 
 const soalSchema = new mongoose.Schema({
   nama: String,
-  butir: [{ soal: String, pilihan: [{ opsi: String }], jawaban: String }],
+  butir: [
+    { soal: String, pilihan: [{ opsi: String }], jawaban: String, file: String }
+  ],
   jumlah: Number,
   diperbarui: Date
 });
@@ -71,6 +73,19 @@ export default class Soals {
       {
         $set: {
           'butir.$.jawaban': jawaban
+        }
+      },
+      { new: true }
+    );
+    return query;
+  }
+
+  async uploadFile(_idButirSoal, file) {
+    const query = await this.service.findOneAndUpdate(
+      { 'butir._id': _idButirSoal },
+      {
+        $set: {
+          'butir.$.file': file
         }
       },
       { new: true }

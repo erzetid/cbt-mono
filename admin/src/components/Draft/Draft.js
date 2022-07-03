@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect } from "react";
-import { Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw } from "draft-js";
+import { Editor, EditorState, getDefaultKeyBinding, RichUtils } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
-import "./css/example.css";
-import "./css/draft.css";
-import "./css/rich-editor.css";
+import { stateFromHTML } from "draft-js-import-html";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "store/slice/draftJs";
-import { stateFromHTML } from "draft-js-import-html";
+import "./css/draft.css";
+import "./css/example.css";
+import "./css/rich-editor.css";
 
 const { useState, useRef, useCallback } = React;
 

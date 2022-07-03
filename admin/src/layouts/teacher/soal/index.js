@@ -78,7 +78,6 @@ function Soal() {
     checkLogin();
   }, [token, openAlert]);
   const hapusSoal = async (_id) => {
-    await dispatch(refreshToken());
     const _delete = await dispatch(deleteSoalById(_id));
     setAlerData({ msg: _delete.payload.message, status: _delete.payload.status });
     setOpenAlert(true);
@@ -143,7 +142,6 @@ function Soal() {
     setOpenAlert(false);
   };
   const tambahSoal = async () => {
-    await dispatch(refreshToken());
     const newSoal = await dispatch(
       postSoal({ nama, jumlah: parseInt(jumlah), jumlahOpsi: parseInt(jumlahOpsi) })
     );

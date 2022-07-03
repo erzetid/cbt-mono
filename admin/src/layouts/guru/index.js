@@ -203,7 +203,6 @@ function Guru() {
   const handleOk = async () => {
     if (kelas !== null) {
       if (nisn !== "" || nama !== "") {
-        await dispatch(refreshToken());
         const _simpan = await dispatch(
           postGuru({
             nuptk: nisn,
@@ -229,7 +228,6 @@ function Guru() {
 
   const handleOkEdit = async () => {
     if (kelas !== null || nama !== "") {
-      await dispatch(refreshToken());
       const _edit = await dispatch(
         putGuru({
           nuptk: nisn,

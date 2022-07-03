@@ -12,6 +12,9 @@ export default class SoalHandler extends BaseHandler {
     try {
       const re = /(\.xlsx)$/i;
       if (!re.exec(req.file.originalname)) {
+        fs.unlinkSync(
+          path.join(path.resolve(), 'assets/' + req.file.originalname)
+        );
         return super.render(res, 400, {
           status: 'error',
           message: 'File harus xlsx!'
@@ -406,30 +409,41 @@ export default class SoalHandler extends BaseHandler {
       });
     }
   }
-}
 
-const y = [
-  {
-    soal: 'Konjungsi yang terdapat pada kalimat 5 pada paragraf di atas termasuk konjungsi...',
-    pilihan: [
-      { opsi: 'Orang pertama pelaku utama', _id: '62c0ce69e9f82b0a2e507a38' },
-      {
-        opsi: 'Orang pertama pelaku sampingan',
-        _id: '62c0ce69e9f82b0a2e507a39'
-      },
-      { opsi: 'Orang kedua pelaku utama', _id: '62c0ce69e9f82b0a2e507a3a' },
-      { opsi: 'Orang ketiga pelaku utama', _id: '62c0ce69e9f82b0a2e507a3b' },
-      { opsi: 'Orang ketiga pelaku sampingan', _id: '62c0ce69e9f82b0a2e507a3c' }
-    ]
-  },
-  {
-    soal: 'Perhatikan pendapat berikut: Terdapat beberapa diksi yang jarang didengar masyarakat Indonesia yang tinggal di daerah pelosok. Selain itu, penggunaan kata hubung dan partikel yang kurang tepat membuat pembaca harus mengulang bacaan kalimat agar bisa memahami cerita secara utuh. Aspek resensi yang berkaitan dengan pendapat tersebut adalah...',
-    pilihan: [
-      { opsi: 'Subordinatif', _id: '62c0ce69e9f82b0a2e507a3d' },
-      { opsi: 'Antarkalimat', _id: '62c0ce69e9f82b0a2e507a3e' },
-      { opsi: 'Koordinatif', _id: '62c0ce69e9f82b0a2e507a3f' },
-      { opsi: 'Kausal', _id: '62c0ce69e9f82b0a2e507a40' },
-      { _id: '62c0ce69e9f82b0a2e507a41' }
-    ]
+  async uploadHandler(req, res, _next) {
+    try {
+      const { _id } = req.body;
+      const { originalname, size } = req.file;
+      if (size > 5242880) {
+        fs.unlinkSync(path.join(path.resolve(), 'assets/' + originalname));
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Ukuran file maksimal 5MB!'
+        });
+      }
+      const re = /(\.png|\.jpg|\.jpeg|\.mp4|\.mp3)$/i;
+      if (!re.exec(originalname)) {
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Tipe file tidak didukung!'
+        });
+      }
+      if (!mongoose.isValidObjectId(_id))
+        return super.render(res, 400, {
+          status: 'error',
+          message: 'Id butir soal tidak ditemukan!'
+        });
+      await soal.uploadFile(_id, originalname);
+      return super.render(res, 200, {
+        status: 'success',
+        message: 'Upload file berhasil!'
+      });
+    } catch (error) {
+      console.log(error);
+      return super.render(res, 500, {
+        status: 'error',
+        message: 'Mohon maaf, kesalahan server!'
+      });
+    }
   }
-];
+}

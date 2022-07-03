@@ -171,3 +171,25 @@ export const importSoal = createAsyncThunk(
     }
   }
 );
+export const upload = createAsyncThunk(
+  "/soal/upload",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.post(`/soal/upload`, payload, {
+        headers: {
+          Authorization: "Bearer " + states.auth.token, //the token is a variable which holds the token
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: "error" } &&
+          rejectWithValue({ message: error.message, status: "error" })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
