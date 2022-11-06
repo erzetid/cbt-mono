@@ -32,16 +32,40 @@ import Configurator from "examples/Configurator";
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
 import SignIn from "layouts/authentication/sign-in";
+import Dashboard from "layouts/dashboard";
 import ManageSoal from "layouts/manageSoal";
-import { useEffect, useMemo, useState } from "react";
-import { Provider } from "react-redux";
+import Nilai from "layouts/teacher/nilai";
+import Soal from "layouts/teacher/soal";
+import { useEffect, useState } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
 // react-router components
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-// Material Dashboard 2 React routes
 import routes from "routes";
+import { refreshToken } from "store/slice/authThunk";
+import { jwtDeccode } from "utils/jwtDecode";
 import store from "./store";
-
+const routeGuru = [
+  {
+    type: "collapse",
+    name: "Soal",
+    key: "soal",
+    icon: <Icon fontSize="small">article</Icon>,
+    route: "/soal",
+    path: "/soal",
+    element: <Soal />,
+  },
+  {
+    type: "collapse",
+    name: "Nilai",
+    key: "nilai",
+    icon: <Icon fontSize="small">create</Icon>,
+    route: "/nilai",
+    path: "/nilai",
+    element: <Nilai />,
+  },
+];
 export default function App() {
+  const dispatchs = useDispatch();
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -55,6 +79,8 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
+  const [menus, setMenus] = useState([]);
+  const { token } = useSelector((state) => state.auth);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -74,6 +100,20 @@ export default function App() {
 
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  useEffect(() => {
+    const checkLogin = async () => {
+      const auth = await dispatchs(refreshToken());
+      if (auth.payload.status === "success") {
+        const jwt = jwtDeccode(auth.payload.token);
+        if (jwt.role === "admin") {
+          setMenus(routes);
+        } else {
+          setMenus(routeGuru);
+        }
+      }
+    };
+    checkLogin();
+  }, [menus, dispatchs, layout, token]);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -86,8 +126,6 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const menus = useMemo(() => routes, []);
-
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -95,13 +133,7 @@ export default function App() {
       }
 
       if (route.route) {
-        return (
-          <Route
-            path={route.route}
-            element={useMemo(() => route.element, [menus])}
-            key={route.key}
-          />
-        );
+        return <Route path={route.route} element={route.element} key={route.key} />;
       }
 
       return null;
@@ -140,7 +172,9 @@ export default function App() {
             <Route path="/login" exact element={<SignIn />} />
             <Route path="/manage_soal" element={<ManageSoal />} />
             {getRoutes(menus)}
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/nilai_guru" element={<Nilai />} />
           </Routes>
         </>
         {layout === "dashboard" && (
@@ -149,7 +183,7 @@ export default function App() {
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
               brandName="CBT - Nailul Rifki"
-              routes={routes}
+              routes={menus}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />

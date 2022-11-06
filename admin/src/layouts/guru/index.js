@@ -76,16 +76,17 @@ function Guru() {
   const [barisSiswa, setBarisSiswa] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
   const [kelas, setKelas] = useState(null);
-  const [kelasSiswa, setKelasSiswa] = useState([]);
+  const [kelasSiswa, setKelasSiswa] = useState([{ _id: "", nama: "" }]);
+
   useEffect(() => {
-    const checkLogin = async () => {
+    (async () => {
       const auth = await dispatch(refreshToken());
       const _siswa = await dispatch(getGuru());
       const _kelas = await dispatch(getKelas());
-      setKelasSiswa(_kelas.payload.data);
-      setBarisSiswa(setTable(_siswa.payload.data, _kelas.payload.data));
       if (auth.payload.status === "success") {
         const jwt = jwtDeccode(auth.payload.token);
+        setBarisSiswa(setTable(_siswa.payload.data, _kelas.payload.data));
+        setKelasSiswa(_kelas.payload.data);
         if (jwt.role !== "admin") {
           console.log(jwt);
           return navigate("/login");
@@ -93,9 +94,8 @@ function Guru() {
       } else {
         return navigate("/login");
       }
-    };
-    checkLogin();
-  }, [token, refreshTable]);
+    })();
+  }, [token, dispatch]);
 
   const handleClickAlert = () => {
     setOpenAlert(true);

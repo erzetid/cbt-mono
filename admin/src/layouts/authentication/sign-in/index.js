@@ -55,9 +55,8 @@ function Basic() {
       const auth = await dispatch(refreshToken());
       if (auth.payload.status === "success") {
         const jwt = jwtDeccode(auth.payload.token);
-        if (jwt.role === "admin") {
-          console.log(jwt);
-          return navigate("/dashboard");
+        if (jwt.role === "admin" || jwt.role === "guru") {
+          return navigate("/home");
         }
       }
     };

@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   idUser: String,
   username: String,
   password: String,
   role: String,
-  refreshToken: String,
+  refreshToken: String
 });
 
-const userService = mongoose.model("users", userSchema);
+const userService = mongoose.model('users', userSchema);
 
 export default class Users {
   service = userService;
@@ -16,7 +16,7 @@ export default class Users {
   async simpan(idUser, username, password, role) {
     const checkUsername = await this.getUsername(username);
     if (checkUsername) {
-      throw new Error("username tidak tersedia!");
+      throw new Error('username tidak tersedia!');
     }
     const userBaru = new this.service({ idUser, username, password, role });
     const query = await userBaru.save();
@@ -89,9 +89,9 @@ export default class Users {
   async simpanAdmin(username, password) {
     const checkUsername = await this.getUsername(username);
     if (checkUsername) {
-      throw new Error("username tidak tersedia!");
+      throw new Error('username tidak tersedia!');
     }
-    const userBaru = new this.service({ username, password, role: "admin" });
+    const userBaru = new this.service({ username, password, role: 'admin' });
     return await userBaru.save();
   }
 }

@@ -32,7 +32,7 @@ export default class AuthHandler extends BaseHandler {
       const checkUsername = await user.getById(verifyRefresToken.user);
 
       let payload;
-      if (!checkUsername.idUser) {
+      if (checkUsername.role !== 'siswa') {
         payload = {
           user: checkUsername._id,
           role: checkUsername.role
@@ -99,7 +99,7 @@ export default class AuthHandler extends BaseHandler {
         });
       }
       let payload;
-      if (!checkUsername.idUser) {
+      if (checkUsername.role !== 'siswa') {
         payload = {
           user: checkUsername._id,
           role: checkUsername.role

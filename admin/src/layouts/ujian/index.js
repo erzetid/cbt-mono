@@ -14,20 +14,9 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import { useNavigate } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MuiAlert from "@mui/material/Alert";
-
-// Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import MDTypography from "components/MDTypography";
-
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import {
   Dialog,
   DialogActions,
@@ -41,23 +30,34 @@ import {
   Select,
   Snackbar,
 } from "@mui/material";
-import { forwardRef, useEffect, useState } from "react";
-import DataTable from "examples/Tables/DataTable";
+import MuiAlert from "@mui/material/Alert";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
 import MDBadge from "components/MDBadge";
-import MDInput from "components/MDInput";
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
+import MDTypography from "components/MDTypography";
+import Footer from "examples/Footer";
+// Material Dashboard 2 React example components
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import DataTable from "examples/Tables/DataTable";
+import { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { refreshToken } from "store/slice/authThunk";
-import { jwtDeccode, filterKelas } from "utils/jwtDecode";
-import { getUjian, postUjian } from "store/slice/ujianThunk";
 import { getKelas } from "store/slice/kelasThunk";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import { getSoal } from "store/slice/soalThunk";
-import { deleteUjianById } from "store/slice/ujianThunk";
-import { nonaktifkanUjian } from "store/slice/ujianThunk";
-import { actifkanUjian } from "store/slice/ujianThunk";
+import {
+  actifkanUjian,
+  deleteUjianById,
+  getUjian,
+  nonaktifkanUjian,
+  postUjian,
+} from "store/slice/ujianThunk";
+import { filterKelas, jwtDeccode } from "utils/jwtDecode";
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -98,9 +98,15 @@ function Ujian() {
         const _ujian = await dispatch(getUjian());
         const _kelas = await dispatch(getKelas());
         const _soal = await dispatch(getSoal());
-        setKelasSiswa(_kelas.payload.data);
-        setSoal(_soal.payload.data);
-        setUjianArr(_ujian.payload.data);
+        if (
+          _kelas.payload.status === "success" &&
+          _soal.payload.status === "success" &&
+          _ujian.payload.status === "success"
+        ) {
+          setKelasSiswa(_kelas.payload.data);
+          setSoal(_soal.payload.data);
+          setUjianArr(_ujian.payload.data);
+        }
       } else {
         return navigate("/login");
       }

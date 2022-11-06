@@ -97,8 +97,10 @@ function Pengaturan() {
       const auth = await dispatch(refreshToken());
       const data = await dispatch(getKelas());
       const _dataSekolah = await dispatch(getSekolah());
-      setKelasArray(data.payload.data);
-      setDataSekolah(_dataSekolah.payload.data);
+      if (_dataSekolah.payload.status === "success" && data.payload.status === "success") {
+        setDataSekolah(_dataSekolah.payload.data);
+        setKelasArray(data.payload.data);
+      }
       if (auth.payload.status === "success") {
         const jwt = jwtDeccode(auth.payload.token);
         if (jwt.role !== "admin") {

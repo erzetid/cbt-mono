@@ -36,7 +36,7 @@ export default function Pertanyaan() {
       await dispatch(lihatJawaban(searchParams.get('id')));
     };
     getData();
-  }, []);
+  }, [dispatch, navigate, searchParams]);
 
   useEffect(() => {
     const getSoal = async () =>
@@ -61,9 +61,6 @@ export default function Pertanyaan() {
       timerId = setInterval(() => {
         setCountDown((countDown) => countDown - 1);
       }, 1000);
-    } else {
-      alert('Waktu kamu sudah habis.');
-      handleSelesai();
     }
 
     return () => clearInterval(timerId);
@@ -74,6 +71,8 @@ export default function Pertanyaan() {
       console.log('expired');
       setRunTimer(false);
       setCountDown(0);
+      alert('Waktu kamu sudah habis.');
+      handleSelesai();
     }
   }, [countDown, runTimer]);
 

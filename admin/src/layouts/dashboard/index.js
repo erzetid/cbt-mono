@@ -86,16 +86,27 @@ const Dashboard = () => {
       const { payload: _ujian } = await dispatch(getUjian());
       if (auth.payload.status === "success") {
         const jwt = jwtDeccode(auth.payload.token);
-        if (jwt.role !== "admin") {
-          console.log(jwt);
+        if (
+          _pengumuman.status === "success" &&
+          _soal.status === "success" &&
+          _ujian.status === "success" &&
+          _token.status === "success" &&
+          _kelas.payload.status === "success"
+        ) {
+          setDataPengumuman(_pengumuman.data);
+          setKelasSiswa(_kelas.payload.data);
+          setJmlSiswa(siswa.data.length);
+          setJmlSoal(_soal.data.length);
+          setTokenUjian(_token.token);
+          setJmlUjian(_ujian.data.length);
+        }
+        if (jwt.role === "admin") {
+          return navigate("/dashboard");
+        } else if (jwt.role !== "admin") {
+          return navigate("/nilai_guru");
+        } else {
           return navigate("/login");
         }
-        setDataPengumuman(_pengumuman.data);
-        setKelasSiswa(_kelas.payload.data);
-        setJmlSiswa(siswa.data.length);
-        setJmlSoal(_soal.data.length);
-        setTokenUjian(_token.token);
-        setJmlUjian(_ujian.data.length);
       } else {
         return navigate("/login");
       }

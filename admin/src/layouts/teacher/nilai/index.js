@@ -68,7 +68,7 @@ function Nilai() {
       const auth = await dispatch(refreshToken());
       if (auth.payload.status === "success") {
         const jwt = jwtDeccode(auth.payload.token);
-        if (jwt.role !== "admin") {
+        if (jwt.role !== "guru") {
           console.log(jwt);
           return navigate("/login");
         }
